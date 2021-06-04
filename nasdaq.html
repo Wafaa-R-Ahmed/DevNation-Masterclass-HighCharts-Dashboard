@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Nasdaq</title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#">HighCharts Example</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNavAltMarkup"
+        aria-controls="navbarNavAltMarkup"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav ml-4">
+          <a class="nav-item nav-link" href="index.html">Project Values</a>
+          <a class="nav-item nav-link" href="project-types.html"
+            >Project Types</a
+          >
+          <a class="nav-item nav-link active" href="nasdaq.html"
+            >Nasdaq <span class="sr-only">(current)</span></a
+          >
+        </div>
+      </div>
+    </nav>
+    <div class="p-4">
+      <figure class="highcharts-figure">
+        <div id="container"></div>
+      </figure>
+    </div>
+    <script src="https://code.highcharts.com/stock/highstock.js"></script>
+    <script src="https://code.highcharts.com/stock/modules/data.js"></script>
+    <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/stock/modules/export-data.js"></script>
+
+    <script>
+      var chart_data = [];
+
+      async function fetchDataAndInitChart() {
+        var response = await fetch("data/nasdaq-data.json");
+        var result = await response.json();
+
+        chart_data = result.map((element) => {
+          var new_element = [];
+          new_element[0] = new Date(element.Time_Of_Last_Update).getTime();
+          new_element[1] = element.Display_Price;
+          return new_element;
+        });
+
+        Highcharts.stockChart("container", {
+          rangeSelector: {
+            selected: 1,
+          },
+          title: {
+            text: "Depa PLC Stock price (USD)",
+          },
+          tooltip: {
+            valueDecimals: 2,
+            shared: true
+          },
+          series: [
+            {
+              name: "Stock Price (USD)",
+              data: chart_data,
+              marker: {
+                enabled: true,
+                radius: 2,
+              },
+            },
+          ],
+        });
+      }
+
+      fetchDataAndInitChart();
+    </script>
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

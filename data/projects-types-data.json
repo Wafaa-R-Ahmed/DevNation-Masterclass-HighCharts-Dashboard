@@ -1,0 +1,18 @@
+[
+  {
+    "name": "Hospitality",
+    "data": [130, 149, 30, 35]
+  },
+  {
+    "name": "Commercial",
+    "data": [40, 76, 12, 14]
+  },
+  {
+    "name": "Resedential",
+    "data": [101, 93, 50, 12]
+  },
+  {
+    "name": "Yachts and Marine",
+    "data": [24, 19, 7, 5]
+  }
+]

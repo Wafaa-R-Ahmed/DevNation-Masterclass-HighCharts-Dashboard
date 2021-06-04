@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Project Types</title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#">HighCharts Example</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNavAltMarkup"
+        aria-controls="navbarNavAltMarkup"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav ml-4">
+          <a class="nav-item nav-link" href="index.html">Project Values</a>
+          <a class="nav-item nav-link active" href="project-types.html"
+            >Project Types <span class="sr-only">(current)</span></a
+          >
+          <a class="nav-item nav-link" href="nasdaq.html">Nasdaq</a>
+        </div>
+      </div>
+    </nav>
+    <div class="p-4">
+      <figure class="highcharts-figure">
+        <div id="container"></div>
+      </figure>
+    </div>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script>
+      var chart_data = [];
+      async function fetchDataAndInitChart() {
+        var response = await fetch("data/projects-types-data.json");
+        chart_data = await response.json();
+
+        Highcharts.chart("container", {
+          chart: {
+            type: "column",
+          },
+          title: {
+            text: "Projects Types in the last 4 years",
+          },
+          xAxis: {
+            categories: ["2018", "2019", "2020", "2021"],
+            crosshair: true,
+          },
+          yAxis: {
+            min: 0,
+            title: {
+              text: "Projects",
+            },
+          },
+          tooltip: {
+            headerFormat:
+              '<span style="font-size:10px">{point.key}</span><table>',
+            pointFormat:
+              '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+              '<td style="padding:0"><b>{point.y}</b></td></tr>',
+            footerFormat: "</table>",
+            shared: true,
+            useHTML: true,
+          },
+          plotOptions: {
+            column: {
+              pointPadding: 0.2,
+              borderWidth: 0,
+            },
+          },
+          series: chart_data,
+        });
+      }
+      fetchDataAndInitChart();
+    </script>
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

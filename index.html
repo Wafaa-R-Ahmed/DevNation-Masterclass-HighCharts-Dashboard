@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Projects</title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#">HighCharts Example</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNavAltMarkup"
+        aria-controls="navbarNavAltMarkup"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav ml-4">
+          <a class="nav-item nav-link active" href="index.html"
+            >Project Values <span class="sr-only">(current)</span></a
+          >
+          <a class="nav-item nav-link" href="project-types.html">Project Types</a>
+          <a class="nav-item nav-link" href="nasdaq.html">Nasdaq</a>
+        </div>
+      </div>
+    </nav>
+    <div class="p-4">
+      <figure class="highcharts-figure">
+        <div id="container"></div>
+      </figure>
+    </div>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script>
+      var chart_data = [];
+      var chart_data_total = 0;
+
+      async function fetchDataAndInitChart() {
+        var response = await fetch("data/projects-values-data.json");
+        chart_data = await response.json();
+        chart_data.forEach((element) => {
+          chart_data_total += element.y;
+        });
+
+        Highcharts.chart("container", {
+          chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: "pie",
+          },
+          credits: {
+            enabled: false,
+          },
+          title: {
+            text: "Project Value (AED)",
+          },
+          useHTML: true,
+          shadow: true,
+          plotOptions: {
+            pie: {
+              allowPointSelect: true,
+              cursor: "pointer",
+              dataLabels: {
+                enabled: true,
+                format: "<b>{point.name}</b>: {point.percentage:.1f}%",
+              },
+              showInLegend: true,
+              point: {
+                events: {
+                  click: function () {
+                    //click event!
+                  },
+                },
+              },
+            },
+          },
+          series: [
+            {
+              name: " ",
+              colorByPoint: true,
+              data: chart_data,
+            },
+          ],
+        });
+      }
+
+      fetchDataAndInitChart();
+    </script>
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
